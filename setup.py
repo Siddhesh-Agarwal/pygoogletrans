@@ -3,7 +3,7 @@
 import os.path
 import re
 
-from setuptools import setup, find_packages
+from setuptools import find_packages, setup
 
 
 def get_file(*paths):
@@ -18,14 +18,14 @@ def get_file(*paths):
 def get_version():
     init_py = get_file(os.path.dirname(__file__), 'googletrans', '__init__.py')
     pattern = r"{0}\W*=\W*'([^']+)'".format('__version__')
-    version, = re.findall(pattern, init_py)
+    (version,) = re.findall(pattern, init_py)
     return version
 
 
 def get_description():
     init_py = get_file(os.path.dirname(__file__), 'googletrans', '__init__.py')
     pattern = r'"""(.*?)"""'
-    description, = re.findall(pattern, init_py, re.DOTALL)
+    (description,) = re.findall(pattern, init_py, re.DOTALL)
     return description
 
 
@@ -43,29 +43,31 @@ def install():
         author='SuHun Han',
         author_email='ssut' '@' 'ssut.me',
         url='https://github.com/ssut/py-googletrans',
-        classifiers=['Development Status :: 5 - Production/Stable',
-                     'Intended Audience :: Education',
-                     'Intended Audience :: End Users/Desktop',
-                     'License :: Freeware',
-                     'Operating System :: POSIX',
-                     'Operating System :: Microsoft :: Windows',
-                     'Operating System :: MacOS :: MacOS X',
-                     'Topic :: Education',
-                     'Programming Language :: Python',
-                     'Programming Language :: Python :: 3.6',
-                     'Programming Language :: Python :: 3.7',
-                     'Programming Language :: Python :: 3.8'],
+        classifiers=[
+            'Development Status :: 5 - Production/Stable',
+            'Intended Audience :: Education',
+            'Intended Audience :: End Users/Desktop',
+            'License :: Freeware',
+            'Operating System :: POSIX',
+            'Operating System :: Microsoft :: Windows',
+            'Operating System :: MacOS :: MacOS X',
+            'Topic :: Education',
+            'Programming Language :: Python',
+            'Programming Language :: Python :: 3.6',
+            'Programming Language :: Python :: 3.7',
+            'Programming Language :: Python :: 3.8',
+        ],
         packages=find_packages(exclude=['docs', 'tests']),
         keywords='google translate translator',
         install_requires=[
             'httpx[http2]>=0.23,<0.27.3',
         ],
-        python_requires= '>=3.6',
+        python_requires='>=3.6',
         tests_require=[
             'pytest',
             'coveralls',
         ],
-        scripts=['translate']
+        scripts=['translate'],
     )
 
 

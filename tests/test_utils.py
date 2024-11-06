@@ -1,5 +1,6 @@
-from googletrans import utils
 from pytest import raises
+
+from googletrans import utils
 
 
 def test_format_json():
@@ -7,8 +8,17 @@ def test_format_json():
 
     result = utils.format_json(text)
 
-    assert result == [None, None, 'en', None, None, None, 0.96954316, None,
-                      [['en'], None, [0.96954316]]]
+    assert result == [
+        None,
+        None,
+        'en',
+        None,
+        None,
+        None,
+        0.96954316,
+        None,
+        [['en'], None, [0.96954316]],
+    ]
 
 
 def test_format_malformed_json():

@@ -1,7 +1,8 @@
+from unittest.mock import patch
+
 from httpcore import TimeoutException
 from httpcore._exceptions import ConnectError
-from httpx import Timeout, Client, ConnectTimeout
-from unittest.mock import patch
+from httpx import Client, ConnectTimeout, Timeout
 from pytest import raises
 
 from googletrans import Translator
@@ -18,6 +19,7 @@ def test_bind_multiple_service_urls():
 
     assert translator.translate('test', dest='ko')
     assert translator.detect('Hello')
+
 
 def test_api_service_urls():
     service_urls = ['translate.googleapis.com']
@@ -66,8 +68,7 @@ def test_language_name(translator):
 
 
 def test_language_name_with_space(translator):
-    result = translator.translate(
-        u'Hello', src='en', dest='chinese (simplified)')
+    result = translator.translate(u'Hello', src='en', dest='chinese (simplified)')
     assert result.dest == 'zh-cn'
 
 

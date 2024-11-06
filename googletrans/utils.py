@@ -1,22 +1,31 @@
 """A conversion module for googletrans"""
+
 import json
 import re
+from typing import Any, Dict, List, Optional, Sequence, Tuple, Union
 
 
-def build_params(client,query, src, dest, token, override):
+def build_params(
+    client: str,
+    query: Union[str, Sequence[str]],
+    src: str,
+    dest: str,
+    token: str,
+    override: Optional[Dict[str, Any]],
+):
     params = {
-        'client': client,
-        'sl': src,
-        'tl': dest,
-        'hl': dest,
-        'dt': ['at', 'bd', 'ex', 'ld', 'md', 'qca', 'rw', 'rm', 'ss', 't'],
-        'ie': 'UTF-8',
-        'oe': 'UTF-8',
-        'otf': 1,
-        'ssel': 0,
-        'tsel': 0,
-        'tk': token,
-        'q': query,
+        "client": client,
+        "sl": src,
+        "tl": dest,
+        "hl": dest,
+        "dt": ["at", "bd", "ex", "ld", "md", "qca", "rw", "rm", "ss", "t"],
+        "ie": "UTF-8",
+        "oe": "UTF-8",
+        "otf": 1,
+        "ssel": 0,
+        "tsel": 0,
+        "tk": token,
+        "q": query,
     }
 
     if override is not None:
@@ -26,9 +35,9 @@ def build_params(client,query, src, dest, token, override):
     return params
 
 
-def legacy_format_json(original):
+def legacy_format_json(original: str):
     # save state
-    states = []
+    states: List[Tuple[int, str]] = []
     text = original
 
     # save position for double-quoted texts
@@ -40,10 +49,10 @@ def legacy_format_json(original):
             states.append((p, text[p:nxt]))
 
     # replace all wiered characters in text
-    while text.find(',,') > -1:
-        text = text.replace(',,', ',null,')
-    while text.find('[,') > -1:
-        text = text.replace('[,', '[null,')
+    while text.find(",,") > -1:
+        text = text.replace(",,", ",null,")
+    while text.find("[,") > -1:
+        text = text.replace("[,", "[null,")
 
     # recover state
     for i, pos in enumerate(re.finditer('"', text)):
@@ -59,12 +68,12 @@ def legacy_format_json(original):
     return converted
 
 
-def get_items(dict_object):
+def get_items(dict_object: Dict[Any, Any]):
     for key in dict_object:
         yield key, dict_object[key]
 
 
-def format_json(original):
+def format_json(original: str):
     try:
         converted = json.loads(original)
     except ValueError:
@@ -73,7 +82,6 @@ def format_json(original):
     return converted
 
 
-def rshift(val, n):
-    """python port for '>>>'(right shift with padding)
-    """
+def rshift(val: int, n: int):
+    """python port for '>>>'(right shift with padding)"""
     return (val % 0x100000000) >> n
